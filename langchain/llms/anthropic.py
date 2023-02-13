@@ -198,7 +198,6 @@ class AnthropicInstruct(Anthropic, BaseModel):
                 response = anthropic("What are the biggest risks facing humanity?.")
         """
         # Wrap the prompt so it emulates an instruction following model.
-
         return super()._call(self._wrap_prompt(prompt), stop)
 
     def stream(self, prompt: str, stop: Optional[List[str]] = None) -> Generator:
