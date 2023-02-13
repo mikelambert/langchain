@@ -26,25 +26,21 @@ files = [
 
 [[package]]
 name = "anthropic"
-version = "0.2.1"
+version = "0.2.2"
 description = "Library for accessing the anthropic API"
 category = "main"
 optional = false
 python-versions = ">=3.8"
-files = []
-develop = false
+files = [
+    {file = "anthropic-0.2.2-py3-none-any.whl", hash = "sha256:383cdc6a8509b68b103586ce60c80d86557e90940ace2d12d7e4f193458e1e63"},
+    {file = "anthropic-0.2.2.tar.gz", hash = "sha256:3fbe61e37bd5f98f3d65ff3ee97bd64a6084f79a222ccb841dad8ff20c43b25e"},
+]
 
 [package.dependencies]
 requests = "*"
 
 [package.extras]
 dev = ["black (>=22.3.0)", "pytest"]
-
-[package.source]
-type = "git"
-url = "https://github.com/anthropics/anthropic-sdk-python.git"
-reference = "HEAD"
-resolved_reference = "b61e0637b6a4b34399aafff4adc756fe649325bb"
 
 [[package]]
 name = "anyio"
@@ -6296,4 +6292,4 @@ llms = ["anthropic", "manifest-ml", "torch", "transformers"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "9847f7ae14de4bb9514e6644a1a0fcb43b13b050ad12bcc86d177b540b3ad010"
+content-hash = "43bd668fa2ec4f91a7ef4bc4d2c1e751605fdd77d30311a45906619abf37e1c3"
