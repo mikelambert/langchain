@@ -115,7 +115,9 @@ class Anthropic(LLM, BaseModel):
         Example:
             .. code-block:: python
 
-                response = model("What are the biggest risks facing humanity?")
+                prompt = "What are the biggest risks facing humanity?"
+                prompt = f"\n\nHuman: {prompt}\n\nAssistant:"
+                response = model(prompt)
 
         """
         stop = self._get_anthropic_stop(stop)
@@ -141,7 +143,10 @@ class Anthropic(LLM, BaseModel):
         Example:
             .. code-block:: python
 
-                generator = anthropic.stream("Write a poem about a stream.")
+
+                prompt = "Write a poem about a stream."
+                prompt = f"\n\nHuman: {prompt}\n\nAssistant:"
+                generator = anthropic.stream(prompt)
                 for token in generator:
                     yield token
         """
@@ -175,7 +180,7 @@ class AnthropicInstruct(Anthropic, BaseModel):
         if prompt.startswith(self.HUMAN_PROMPT):
             return prompt  # Already wrapped.
         else:
-            return f"{self.HUMAN_PROMPT} prompt{self.AI_PROMPT} Sure, here you go:\n"
+            return f"{self.HUMAN_PROMPT} {prompt}{self.AI_PROMPT} Sure, here you go:\n"
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
         r"""Call out to Anthropic's completion endpoint.
