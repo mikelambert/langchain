@@ -20,7 +20,13 @@ class Anthropic(LLM, BaseModel):
             from langchain import Anthropic
             model = Anthropic(model="<model_name>", anthropic_api_key="my-api-key")
 
-            prompt = "What are the biggest risks facing humanity?"
+            # Simplest invocation, automatically wrapped with HUMAN_PROMPT
+            # and AI_PROMPT.
+            response = model("What are the biggest risks facing humanity?")
+
+            # Or if you want to use the chat mode, build a few-shot-prompt, or
+            # put words in the Assistant's mouth, use HUMAN_PROMPT and AI_PROMPT:
+            raw_prompt = "What are the biggest risks facing humanity?"
             prompt = f"{anthropic.HUMAN_PROMPT} {prompt}{anthropic.AI_PROMPT}"
             response = model(prompt)
     """
@@ -90,6 +96,14 @@ class Anthropic(LLM, BaseModel):
         """Return type of llm."""
         return "anthropic"
 
+    def _wrap_prompt(self, prompt: str) -> str:
+        if not self.HUMAN_PROMPT or not self.AI_PROMPT:
+            raise NameError("Please ensure the anthropic package is loaded")
+        if prompt.startswith(self.HUMAN_PROMPT):
+            return prompt  # Already wrapped.
+        else:
+            return f"{self.HUMAN_PROMPT} {prompt}{self.AI_PROMPT} Sure, here you go:\n"
+
     def _get_anthropic_stop(self, stop: Optional[List[str]] = None) -> List[str]:
         if not self.HUMAN_PROMPT or not self.AI_PROMPT:
             raise NameError("Please ensure the anthropic package is loaded")
@@ -122,7 +136,10 @@ class Anthropic(LLM, BaseModel):
         """
         stop = self._get_anthropic_stop(stop)
         response = self.client.completion(
-            model=self.model, prompt=prompt, stop_sequences=stop, **self._default_params
+            model=self.model,
+            prompt=self._wrap_prompt(prompt),
+            stop_sequences=stop,
+            **self._default_params,
         )
         text = response["completion"]
         return text
@@ -152,7 +169,10 @@ class Anthropic(LLM, BaseModel):
         """
         stop = self._get_anthropic_stop(stop)
         return self.client.completion_stream(
-            model=self.model, prompt=prompt, stop_sequences=stop, **self._default_params
+            model=self.model,
+            prompt=self._wrap_prompt(prompt),
+            stop_sequences=stop,
+            **self._default_params,
         )
 
 
