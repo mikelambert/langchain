@@ -15,7 +15,7 @@ from tests.unit_tests.callbacks.fake_callback_handler import FakeCallbackHandler
 
 def test_anthropic_call() -> None:
     """Test valid call to anthropic."""
-    chat = ChatAnthropic(model="test")
+    chat = ChatAnthropic(model="claude-instant-1")
     message = HumanMessage(content="Hello")
     response = chat([message])
     assert isinstance(response, AIMessage)
@@ -24,7 +24,7 @@ def test_anthropic_call() -> None:
 
 def test_anthropic_generate() -> None:
     """Test generate method of anthropic."""
-    chat = ChatAnthropic(model="test")
+    chat = ChatAnthropic(model="claude-instant-1")
     chat_messages: List[List[BaseMessage]] = [
         [HumanMessage(content="How many toes do dogs have?")]
     ]
